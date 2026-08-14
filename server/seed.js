@@ -74,17 +74,29 @@ const seed = async () => {
       });
     }
 
-    const hospitals = ['Apollo Hospital', 'Fortis Healthcare', 'Max Hospital', 'AIIMS', 'Care Hospital'];
+    const hospitals = ['Apollo Hospital', 'Fortis Healthcare', 'Max Hospital', 'AIIMS', 'Care Hospital', 'Yashoda Hospital', 'Narayana Health', 'Manipal Hospital'];
+    const donationStatuses = ['Completed', 'Completed', 'Completed', 'Pending'];
+
+    // Create multiple donations per donor for richer history
     for (let i = 0; i < createdDonors.length; i++) {
-      const donation = await DonationHistory.create({
-        donor: createdDonors[i]._id,
-        donationDate: new Date(2025, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1),
-        hospital: hospitals[i % hospitals.length],
-        bloodGroup: createdDonors[i].bloodGroup,
-        unitsDonated: 1,
-        location: createdDonors[i].location,
-        status: 'Completed',
-      });
+      const donorDonationCount = 2 + Math.floor(Math.random() * 2); // 2-3 donations each
+      for (let j = 0; j < donorDonationCount; j++) {
+        const month = Math.max(0, 11 - (j * 3) - Math.floor(Math.random() * 2));
+        const day = Math.floor(Math.random() * 28) + 1;
+        const units = j === 0 ? 1 : Math.floor(Math.random() * 2) + 1;
+        const status = j === 0 && i === 0 ? 'Pending' : donationStatuses[Math.floor(Math.random() * donationStatuses.length)];
+
+        await DonationHistory.create({
+          donor: createdDonors[i]._id,
+          donationDate: new Date(2025, month, day),
+          hospital: hospitals[(i + j) % hospitals.length],
+          bloodGroup: createdDonors[i].bloodGroup,
+          unitsDonated: units,
+          location: createdDonors[i].location,
+          status,
+          notes: j === 0 ? 'Regular donation' : '',
+        });
+      }
 
       await StockHistory.create({
         bloodGroup: createdDonors[i].bloodGroup,
@@ -97,10 +109,22 @@ const seed = async () => {
       });
     }
 
+    // Use future dates so urgent requests remain active
+    const futureDate1 = new Date(); futureDate1.setDate(futureDate1.getDate() + 1);
+    const futureDate2 = new Date(); futureDate2.setDate(futureDate2.getDate() + 2);
+    const futureDate3 = new Date(); futureDate3.setDate(futureDate3.getDate() + 3);
+    const futureDate4 = new Date(); futureDate4.setDate(futureDate4.getDate() + 5);
+    const futureDate5 = new Date(); futureDate5.setDate(futureDate5.getDate() + 7);
+
     await BloodRequest.insertMany([
-      { patientName: 'Arjun Mehta', bloodGroup: 'O+', unitsRequired: 2, hospitalName: 'Apollo Hospital', location: 'Hyderabad', contactNumber: '9988776655', requiredDate: new Date(), emergencyLevel: 'Critical', status: 'Pending' },
-      { patientName: 'Kavitha Rao', bloodGroup: 'A+', unitsRequired: 1, hospitalName: 'Care Hospital', location: 'Hyderabad', contactNumber: '9988776644', requiredDate: new Date(), emergencyLevel: 'High', status: 'In Progress' },
-      { patientName: 'Suresh Babu', bloodGroup: 'B-', unitsRequired: 3, hospitalName: 'Fortis Healthcare', location: 'Bangalore', contactNumber: '9988776633', requiredDate: new Date(), emergencyLevel: 'Critical', status: 'Pending' },
+      { patientName: 'Arjun Mehta', bloodGroup: 'O+', unitsRequired: 2, hospitalName: 'Apollo Hospital', location: 'Hyderabad', contactNumber: '9988776655', requiredDate: futureDate1, emergencyLevel: 'Critical', status: 'Pending', additionalMessage: 'Accident victim, immediate need' },
+      { patientName: 'Kavitha Rao', bloodGroup: 'A+', unitsRequired: 1, hospitalName: 'Care Hospital', location: 'Hyderabad', contactNumber: '9988776644', requiredDate: futureDate2, emergencyLevel: 'High', status: 'In Progress', additionalMessage: 'Scheduled surgery' },
+      { patientName: 'Suresh Babu', bloodGroup: 'B-', unitsRequired: 3, hospitalName: 'Fortis Healthcare', location: 'Bangalore', contactNumber: '9988776633', requiredDate: futureDate1, emergencyLevel: 'Critical', status: 'Pending', additionalMessage: 'Thalassemia patient' },
+      { patientName: 'Lakshmi Devi', bloodGroup: 'O-', unitsRequired: 2, hospitalName: 'AIIMS', location: 'Delhi', contactNumber: '9988776622', requiredDate: futureDate2, emergencyLevel: 'Critical', status: 'Pending', additionalMessage: 'Post-operative transfusion' },
+      { patientName: 'Mohammed Ali', bloodGroup: 'AB+', unitsRequired: 1, hospitalName: 'Max Hospital', location: 'Delhi', contactNumber: '9988776611', requiredDate: futureDate3, emergencyLevel: 'High', status: 'Pending', additionalMessage: 'Dengue patient, platelet drop' },
+      { patientName: 'Deepa Nair', bloodGroup: 'B+', unitsRequired: 2, hospitalName: 'Narayana Health', location: 'Bangalore', contactNumber: '9988776600', requiredDate: futureDate3, emergencyLevel: 'High', status: 'In Progress', additionalMessage: 'Cardiac surgery prep' },
+      { patientName: 'Ravi Teja', bloodGroup: 'A-', unitsRequired: 4, hospitalName: 'Yashoda Hospital', location: 'Hyderabad', contactNumber: '9988776599', requiredDate: futureDate4, emergencyLevel: 'Critical', status: 'Pending', additionalMessage: 'Multiple injuries from road accident' },
+      { patientName: 'Sunita Verma', bloodGroup: 'O+', unitsRequired: 1, hospitalName: 'Manipal Hospital', location: 'Pune', contactNumber: '9988776588', requiredDate: futureDate5, emergencyLevel: 'High', status: 'Pending', additionalMessage: 'Anemia treatment' },
     ]);
 
     console.log('Seed completed successfully!');

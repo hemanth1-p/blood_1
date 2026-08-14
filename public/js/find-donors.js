@@ -19,6 +19,29 @@ document.addEventListener('DOMContentLoaded', () => {
   locationFilter.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') loadDonors();
   });
+
+  // Modal logic
+  const modal = document.getElementById('donorDetailsModal');
+  document.getElementById('closeDonorDetailsBtn')?.addEventListener('click', () => {
+    if (modal) modal.classList.remove('open');
+  });
+
+  window.openDonorDetails = function(index) {
+    const d = window.donorsData[index];
+    if (!d) return;
+    const content = document.getElementById('donorDetailsContent');
+    content.innerHTML = `
+      <p><strong>Name:</strong> ${d.fullName}</p>
+      <p><strong>Blood Group:</strong> <span class="badge badge-danger">${d.bloodGroup}</span></p>
+      <p><strong>Availability:</strong> ${getAvailabilityBadge(d.isAvailable)}</p>
+      <p><strong>Location:</strong> ${d.location || 'Not Specified'}</p>
+      <p><strong>Email:</strong> ${d.email}</p>
+      <p><strong>Phone:</strong> ${d.phone ? `<a href="tel:${d.phone}" style="color: var(--primary);">${d.phone}</a>` : 'Not Specified'}</p>
+      <p><strong>Last Donated:</strong> ${formatDate(d.lastDonationDate)}</p>
+      <p><strong>Total Donations:</strong> ${d.totalDonations || 0} times</p>
+    `;
+    if (modal) modal.classList.add('open');
+  };
 });
 
 async function loadDonors() {
@@ -57,13 +80,17 @@ async function loadDonors() {
       return;
     }
 
-    grid.innerHTML = donors.map((d) => `
+    window.donorsData = donors;
+
+    grid.innerHTML = donors.map((d, index) => `
       <div class="donor-card">
         <div style="display: flex; justify-content: space-between; align-items: flex-start;">
           <span class="donor-blood">🩸 ${d.bloodGroup}</span>
           ${getAvailabilityBadge(d.isAvailable)}
         </div>
-        <h3 class="donor-name">${d.fullName}</h3>
+        <h3 class="donor-name" style="cursor: pointer; color: var(--primary); text-decoration: underline;" onclick="openDonorDetails(${index})">
+          ${d.fullName}
+        </h3>
         <div class="donor-info">
           <span>📍 ${d.location || 'Location Not Specified'}</span>
           <span>📅 Last Donated: ${formatDate(d.lastDonationDate)}</span>

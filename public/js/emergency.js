@@ -52,6 +52,31 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // Modal logic
+  const modal = document.getElementById('requestDetailsModal');
+  document.getElementById('closeRequestDetailsBtn')?.addEventListener('click', () => {
+    if (modal) modal.classList.remove('open');
+  });
+
+  window.openRequestDetails = function(index) {
+    const req = window.urgentRequestsData[index];
+    if (!req) return;
+    const content = document.getElementById('requestDetailsContent');
+    content.innerHTML = `
+      <p><strong>Patient Name:</strong> ${req.patientName}</p>
+      <p><strong>Blood Group:</strong> <span class="badge badge-danger">${req.bloodGroup}</span></p>
+      <p><strong>Units Required:</strong> ${req.unitsRequired}</p>
+      <p><strong>Emergency Level:</strong> ${req.emergencyLevel}</p>
+      <p><strong>Hospital:</strong> ${req.hospitalName}</p>
+      <p><strong>Location:</strong> ${req.location}</p>
+      <p><strong>Required Date:</strong> ${formatDate(req.requiredDate)}</p>
+      <p><strong>Contact Number:</strong> <a href="tel:${req.contactNumber}" style="color: var(--primary);">${req.contactNumber}</a></p>
+      ${req.additionalNotes ? `<p><strong>Notes:</strong> ${req.additionalNotes}</p>` : ''}
+      ${req.additionalMessage ? `<p><strong>Message:</strong> ${req.additionalMessage}</p>` : ''}
+    `;
+    if (modal) modal.classList.add('open');
+  };
 });
 
 async function loadUrgentRequests() {
@@ -71,8 +96,10 @@ async function loadUrgentRequests() {
       return;
     }
 
-    container.innerHTML = requests.map((req) => `
-      <div class="urgent-card">
+    window.urgentRequestsData = requests;
+
+    container.innerHTML = requests.map((req, index) => `
+      <div class="urgent-card" style="cursor: pointer;" onclick="openRequestDetails(${index})">
         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
           <h4 style="margin: 0;">${req.patientName} (${req.bloodGroup})</h4>
           <span class="badge ${req.emergencyLevel === 'Critical' ? 'badge-danger' : 'badge-warning'}">
@@ -80,7 +107,7 @@ async function loadUrgentRequests() {
           </span>
         </div>
         <p><strong>Units:</strong> ${req.unitsRequired} Unit(s) | <strong>Hospital:</strong> ${req.hospitalName}, ${req.location}</p>
-        <p><strong>Required By:</strong> ${formatDate(req.requiredDate)} | <strong>Contact:</strong> <a href="tel:${req.contactNumber}" style="color: #ff8585; text-decoration: underline;">${req.contactNumber}</a></p>
+        <p><strong>Required By:</strong> ${formatDate(req.requiredDate)} | <strong>Contact:</strong> <span style="color: #ff8585; text-decoration: underline;">${req.contactNumber}</span></p>
       </div>
     `).join('');
   } catch (err) {

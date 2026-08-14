@@ -52,10 +52,9 @@ router.get('/urgent', async (req, res) => {
   try {
     const requests = await BloodRequest.find({
       status: { $in: ['Pending', 'In Progress'] },
-      emergencyLevel: { $in: ['Critical', 'High'] },
     })
       .sort({ emergencyLevel: 1, createdAt: -1 })
-      .limit(10);
+      .limit(15);
     res.json({ success: true, requests });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

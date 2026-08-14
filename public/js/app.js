@@ -263,49 +263,63 @@ function initSidebar() {
   const backdrop = document.getElementById('sidebarBackdrop');
   const closeBtn = document.getElementById('sidebarCloseBtn');
 
+  const isMobile = () => window.innerWidth <= 768;
+
   function openSidebar() {
     if (!sidebar) return;
-    sidebar.classList.add('open');
-    if (toggle) { toggle.textContent = '✕'; toggle.classList.add('active'); }
-    if (backdrop) { backdrop.classList.add('visible'); }
-    document.body.style.overflow = 'hidden';
+    if (isMobile()) {
+      sidebar.classList.add('open');
+      if (backdrop) backdrop.classList.add('visible');
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.classList.remove('sidebar-collapsed');
+    }
+    if (toggle) toggle.textContent = '✕';
   }
 
   function closeSidebar() {
     if (!sidebar) return;
-    sidebar.classList.remove('open');
-    if (toggle) { toggle.textContent = '☰'; toggle.classList.remove('active'); }
-    if (backdrop) { backdrop.classList.remove('visible'); }
-    document.body.style.overflow = '';
+    if (isMobile()) {
+      sidebar.classList.remove('open');
+      if (backdrop) backdrop.classList.remove('visible');
+      document.body.style.overflow = '';
+    } else {
+      document.body.classList.add('sidebar-collapsed');
+    }
+    if (toggle) toggle.textContent = '☰';
+  }
+
+  function isSidebarOpen() {
+    if (isMobile()) return sidebar?.classList.contains('open');
+    return !document.body.classList.contains('sidebar-collapsed');
   }
 
   if (toggle && sidebar) {
     toggle.addEventListener('click', () => {
-      if (sidebar.classList.contains('open')) {
-        closeSidebar();
-      } else {
-        openSidebar();
-      }
+      if (isSidebarOpen()) closeSidebar(); else openSidebar();
     });
   }
 
-  if (closeBtn) {
-    closeBtn.addEventListener('click', closeSidebar);
-  }
-
-  if (backdrop) {
-    backdrop.addEventListener('click', closeSidebar);
-  }
+  if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+  if (backdrop) backdrop.addEventListener('click', closeSidebar);
 
   // Close sidebar when a nav link is clicked (on mobile)
   document.querySelectorAll('.sidebar-nav a').forEach((link) => {
     link.addEventListener('click', () => {
-      if (window.innerWidth <= 768) {
-        closeSidebar();
-      }
+      if (isMobile()) closeSidebar();
     });
   });
 
+  // On resize, reset states
+  window.addEventListener('resize', () => {
+    if (!isMobile()) {
+      sidebar?.classList.remove('open');
+      if (backdrop) backdrop.classList.remove('visible');
+      document.body.style.overflow = '';
+    }
+  });
+
+  // Active nav link
   const currentPage = window.location.pathname.split('/').pop();
   document.querySelectorAll('.sidebar-nav a').forEach((link) => {
     const href = link.getAttribute('href');

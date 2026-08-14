@@ -544,7 +544,61 @@ async function loadDonorsForSelect() {
     select.innerHTML = '<option value="">Select Donor...</option>' + donorsList.map((d) => `
       <option value="${d._id}">${d.fullName} (${d.bloodGroup}) - ${d.location}</option>
     `).join('');
+
+    // Also populate the Manage Donors table
+    renderAdminDonorsTable(donorsList);
   } catch (err) {
     console.error('Failed to populate donors:', err);
   }
 }
+
+// ─── Manage Donors Table ─────────────────────────────────────────────────────
+
+function renderAdminDonorsTable(donors) {
+  const tbody = document.getElementById('adminDonorsBody');
+  if (!tbody) return;
+
+  if (!donors || donors.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:2rem; color:var(--gray-400);">No donors found.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = donors.map((d) => `
+    <tr>
+      <td><strong>${d.fullName}</strong></td>
+      <td style="font-size:0.82rem; color:var(--gray-500);">${d.email}</td>
+      <td><span class="badge badge-danger">${d.bloodGroup}</span></td>
+      <td>${d.phone || '—'}</td>
+      <td>${d.location || '—'}</td>
+      <td><strong>${d.totalDonations || 0}</strong> time(s)</td>
+      <td>${getAvailabilityBadge(d.isAvailable)}</td>
+      <td style="font-size:0.82rem;">${d.lastDonationDate ? formatDate(d.lastDonationDate) : '—'}</td>
+    </tr>
+  `).join('');
+}
+
+// Live search + filter for donor table
+(function initDonorFilters() {
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('donorSearchInput');
+    const bloodFilter = document.getElementById('donorBloodFilter');
+    const availFilter = document.getElementById('donorAvailFilter');
+
+    function applyDonorFilters() {
+      const q = (searchInput?.value || '').toLowerCase();
+      const blood = bloodFilter?.value || '';
+      const avail = availFilter?.value;
+
+      let filtered = donorsList;
+      if (q) filtered = filtered.filter(d => (d.fullName + d.location + d.email).toLowerCase().includes(q));
+      if (blood) filtered = filtered.filter(d => d.bloodGroup === blood);
+      if (avail !== '' && avail !== undefined) filtered = filtered.filter(d => String(d.isAvailable) === avail);
+
+      renderAdminDonorsTable(filtered);
+    }
+
+    searchInput?.addEventListener('input', applyDonorFilters);
+    bloodFilter?.addEventListener('change', applyDonorFilters);
+    availFilter?.addEventListener('change', applyDonorFilters);
+  });
+})();
