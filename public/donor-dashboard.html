@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donor Dashboard – BloodConnect</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="page-loader"><div class="loader-drop">🩸</div></div>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="/" class="logo"><span class="logo-icon">🩸</span> BloodConnect</a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/find-donors.html">Find Donors</a>
+        <a href="/emergency.html">Emergency</a>
+      </div>
+      <div class="nav-actions">
+        <span id="navUserBadge" class="badge badge-info" style="font-size: 0.85rem;">Donor</span>
+        <button onclick="auth.logout()" class="btn btn-outline btn-sm">Logout</button>
+      </div>
+      <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+    <div class="mobile-menu">
+      <a href="/">Home</a>
+      <a href="/find-donors.html">Find Donors</a>
+      <a href="/emergency.html">Emergency</a>
+      <a href="#" onclick="auth.logout(); return false;">Logout</a>
+    </div>
+  </nav>
+
+  <div class="dashboard-layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h3 id="sidebarDonorName">Loading...</h3>
+        <p id="sidebarDonorEmail">donor@bloodconnect.com</p>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#overview" class="active"><span class="nav-icon">📊</span> Overview</a>
+        <a href="#history"><span class="nav-icon">📜</span> Donation History</a>
+        <a href="#emergencies"><span class="nav-icon">🚨</span> Urgent Requests</a>
+        <a href="#profile"><span class="nav-icon">👤</span> Profile Settings</a>
+        <a href="#" onclick="auth.logout(); return false;"><span class="nav-icon">🚪</span> Logout</a>
+      </nav>
+    </aside>
+
+    <main class="dashboard-main">
+      <div class="dashboard-header">
+        <h1 id="welcomeGreeting">Welcome, Life Saver!</h1>
+        <p>Manage your donations, toggle your availability, and help save lives.</p>
+      </div>
+
+      <div id="dash-alert" class="alert"></div>
+
+      <!-- Overview Cards -->
+      <div class="dashboard-cards">
+        <div class="dash-card">
+          <div class="dash-card-icon">🩸</div>
+          <div class="dash-card-value" id="cardBloodGroup">—</div>
+          <div class="dash-card-label">Blood Group</div>
+        </div>
+
+        <div class="dash-card">
+          <div class="dash-card-icon">🏆</div>
+          <div class="dash-card-value" id="cardTotalDonations">0</div>
+          <div class="dash-card-label">Times Donated</div>
+        </div>
+
+        <div class="dash-card">
+          <div class="dash-card-icon">❤️</div>
+          <div class="dash-card-value" id="cardLivesImpacted">0</div>
+          <div class="dash-card-label">Lives Impacted</div>
+        </div>
+
+        <div class="dash-card">
+          <div class="dash-card-icon">🔄</div>
+          <div style="margin-top: 0.5rem;">
+            <div class="toggle-group" style="padding: 0;">
+              <div class="toggle-switch" id="availabilityToggle"></div>
+              <span id="availabilityLabel" style="font-weight: 600; font-size: 0.9rem;">Available</span>
+            </div>
+          </div>
+          <div class="dash-card-label" style="margin-top: 0.5rem;">Donation Status</div>
+        </div>
+      </div>
+
+      <div class="slogan-banner">
+        "Heroes come in all types. Yours is printed on your donor card."
+      </div>
+
+      <!-- Urgent Emergencies section -->
+      <section id="emergencies" style="padding: 1.5rem 0;">
+        <div class="table-header" style="background: var(--white); border-radius: var(--radius-lg) var(--radius-lg) 0 0; border: 1px solid var(--gray-100); border-bottom: none;">
+          <h3>🚨 Active Urgent Blood Requests</h3>
+          <a href="/emergency.html" class="btn btn-outline btn-sm">View All & Request</a>
+        </div>
+        <div class="table-wrapper" style="border-top-left-radius: 0; border-top-right-radius: 0;">
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Patient</th>
+                  <th>Blood Group</th>
+                  <th>Units</th>
+                  <th>Emergency</th>
+                  <th>Hospital</th>
+                  <th>City</th>
+                  <th>Contact</th>
+                </tr>
+              </thead>
+              <tbody id="urgentRequestsBody">
+                <tr><td colspan="7" style="text-align: center; color: var(--gray-400);">Loading requests...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Donation History section -->
+      <section id="history" style="padding: 1.5rem 0;">
+        <div class="table-wrapper">
+          <div class="table-header">
+            <h3>📜 My Donation History</h3>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Hospital</th>
+                  <th>Blood Group</th>
+                  <th>Units</th>
+                  <th>Location</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="donationHistoryBody">
+                <tr><td colspan="6" style="text-align: center; color: var(--gray-400);">Loading donation records...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Profile Update section -->
+      <section id="profile" style="padding: 1.5rem 0;">
+        <div class="table-wrapper" style="padding: 2rem;">
+          <h3 style="margin-bottom: 1.5rem;">👤 Update My Profile</h3>
+          <form id="profileForm">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="profName">Full Name</label>
+                <input type="text" id="profName" required>
+              </div>
+              <div class="form-group">
+                <label for="profPhone">Phone Number</label>
+                <input type="tel" id="profPhone" required>
+              </div>
+              <div class="form-group">
+                <label for="profLocation">Location / City</label>
+                <input type="text" id="profLocation" required>
+              </div>
+              <div class="form-group">
+                <label for="profBlood">Blood Group</label>
+                <select id="profBlood" required>
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                </select>
+              </div>
+              <div class="form-group full-width">
+                <label for="profAddress">Full Address</label>
+                <input type="text" id="profAddress" placeholder="Street, area...">
+              </div>
+              <div class="form-group full-width" style="margin-top: 1rem;">
+                <button type="submit" id="profSubmitBtn" class="btn btn-primary">Save Profile Changes</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <button class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+
+  <script src="/js/app.js"></script>
+  <script src="/js/donor-dashboard.js"></script>
+</body>
+</html>

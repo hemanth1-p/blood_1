@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BloodConnect – Donate Blood. Save Lives.</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <div class="page-loader"><div class="loader-drop">🩸</div></div>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="/" class="logo"><span class="logo-icon">🩸</span> BloodConnect</a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/find-donors.html">Find Donors</a>
+        <a href="/emergency.html">Emergency</a>
+        <a href="/register.html">Register</a>
+        <a href="/login.html">Login</a>
+      </div>
+      <div class="nav-actions">
+        <a href="/register.html" class="btn btn-primary btn-sm">Become a Donor ❤️</a>
+      </div>
+      <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+    <div class="mobile-menu">
+      <a href="/">Home</a>
+      <a href="/find-donors.html">Find Donors</a>
+      <a href="/emergency.html">Emergency</a>
+      <a href="/register.html">Register</a>
+      <a href="/login.html">Login</a>
+      <div class="auth-links"></div>
+    </div>
+  </nav>
+
+  <section class="hero bg-pattern">
+    <div class="floating-drops">
+      <span class="floating-drop">🩸</span>
+      <span class="floating-drop">❤️</span>
+      <span class="floating-drop">🩸</span>
+      <span class="floating-drop">💉</span>
+    </div>
+    <div class="container hero-content">
+      <div class="hero-text">
+        <h1>Donate Blood.<br><span>Save Lives.</span></h1>
+        <p>A few minutes of your time can give someone a lifetime.</p>
+        <div class="hero-buttons">
+          <a href="/find-donors.html" class="btn btn-primary btn-lg">🩸 Find a Donor</a>
+          <a href="/register.html" class="btn btn-outline btn-lg">❤️ Become a Donor</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-ring hero-ring-2"></div>
+        <div class="hero-ring hero-ring-1"></div>
+        <div class="hero-circle">
+          <span class="hero-drop">🩸</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats-section">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">🩸</div>
+          <div class="stat-number" id="stat-donors" data-suffix="+">0</div>
+          <div class="stat-label">Registered Donors</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">❤️</div>
+          <div class="stat-number" id="stat-lives" data-suffix="+">0</div>
+          <div class="stat-label">Lives Saved</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🏥</div>
+          <div class="stat-number" id="stat-hospitals" data-suffix="+">0</div>
+          <div class="stat-label">Hospitals</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🚨</div>
+          <div class="stat-number" id="stat-requests" data-suffix="+">0</div>
+          <div class="stat-label">Emergency Requests</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-pattern">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Why Donate?</span>
+        <h2>Why Donate Blood?</h2>
+        <p>Your blood can be someone's second chance at life.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🩸</div>
+          <h3>Save Lives</h3>
+          <p>One donation can help save multiple lives. Every drop counts toward a brighter future.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">❤️</div>
+          <h3>Be a Hero</h3>
+          <p>Your small act of kindness can make a huge difference in someone's life.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🏥</div>
+          <h3>Support Hospitals</h3>
+          <p>Help maintain blood availability when it is needed most by healthcare facilities.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🚨</div>
+          <h3>Help During Emergencies</h3>
+          <p>Connect patients with suitable donors quickly during critical situations.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background: var(--gray-50);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Live Data</span>
+        <h2>Real-Time Impact</h2>
+        <p>Every Drop Counts. See our community's impact in real time.</p>
+      </div>
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3>📊 Donors by Blood Group</h3>
+          <div class="chart-container"><canvas id="bloodGroupChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>🩸 Blood Stock Levels</h3>
+          <div class="chart-container"><canvas id="stockChart"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container">
+      <h2>Someone, Somewhere, Needs Your Blood Today.</h2>
+      <p>Be Someone's Reason to Live. Your Blood. Their Hope.</p>
+      <a href="/register.html" class="btn btn-white btn-lg">Donate Now ❤️</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo"><span class="logo-icon">🩸</span> BloodConnect</div>
+          <p>Connecting blood donors with those in need. Together, we can save more lives through the power of donation.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <a href="/">Home</a>
+          <a href="/find-donors.html">Find Donors</a>
+          <a href="/emergency.html">Emergency Request</a>
+          <a href="/register.html">Register</a>
+        </div>
+        <div class="footer-links">
+          <h4>Account</h4>
+          <a href="/login.html">Login</a>
+          <a href="/register.html">Become a Donor</a>
+          <a href="/donor-dashboard.html">Donor Dashboard</a>
+        </div>
+        <div class="footer-links">
+          <h4>Contact</h4>
+          <a href="mailto:help@bloodconnect.com">help@bloodconnect.com</a>
+          <a href="tel:+9118001234567">1800-123-4567</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 BloodConnect. All rights reserved.</p>
+        <p class="footer-slogan">"A Drop of Blood Can Be a Drop of Hope."</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/app.js"></script>
+  <script src="/js/home.js"></script>
+</body>
+</html>
