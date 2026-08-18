@@ -1,0 +1,47 @@
+/* BloodConnect - Emergency Page Styles */
+@import './styles.css';
+
+.emergency-page {
+  padding-top: 100px;
+  padding-bottom: 4rem;
+}
+
+.emergency-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.emergency-header h1 {
+  font-size: 2.25rem;
+  color: var(--danger);
+}
+
+.emergency-header p {
+  color: var(--gray-600);
+  max-width: 600px;
+  margin: 0.5rem auto 0;
+}
+
+.emergency-form-card {
+  max-width: 800px;
+  margin: 0 auto;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  box-shadow: var(--shadow-lg);
+  border: 2px solid rgba(239, 68, 68, 0.2);
+}
+
+.urgent-card {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.05), rgba(245, 158, 11, 0.05));
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  transition: var(--transition);
+}
+
+.urgent-card:hover {
+  transform: translateX(4px);
+  border-color: var(--danger);
+}

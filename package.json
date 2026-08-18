@@ -1,26 +1,30 @@
 {
-  "name": "bloodconnect",
+  "name": "bloodconnect-mern",
   "version": "1.0.0",
-  "description": "BloodConnect - Blood Donation & Emergency Management System",
-  "main": "server/server.js",
+  "description": "BloodConnect - Blood Donation & Emergency Management System (MERN Stack: React + JSX + Node/Express + MongoDB)",
   "scripts": {
-    "start": "node server/server.js",
-    "dev": "nodemon server/server.js",
-    "seed": "node server/seed.js"
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "npm run dev --prefix server",
+    "client": "npm run dev --prefix client",
+    "start": "npm run start --prefix server",
+    "seed": "npm run seed --prefix server",
+    "build": "npm run build --prefix client",
+    "install:all": "npm install && npm install --prefix server && npm install --prefix client"
   },
-  "keywords": ["blood-donation", "emergency", "healthcare"],
+  "keywords": [
+    "blood-donation",
+    "emergency",
+    "healthcare",
+    "mern",
+    "react",
+    "jsx",
+    "express",
+    "mongodb",
+    "vite"
+  ],
   "author": "BloodConnect Team",
   "license": "MIT",
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.21.0",
-    "express-validator": "^7.2.0",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.7.0"
-  },
   "devDependencies": {
-    "nodemon": "^3.1.7"
+    "concurrently": "^8.2.2"
   }
 }

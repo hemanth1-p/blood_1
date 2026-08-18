@@ -1,0 +1,60 @@
+/* BloodConnect - Find Donors Page Styles */
+@import './styles.css';
+
+.search-section {
+  background: var(--white);
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.search-bar-grid {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1.5fr auto;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.donors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.donor-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  border: 1px solid var(--gray-200);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.donor-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-glow);
+}
+
+.donor-blood {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.donor-name {
+  font-size: 1.15rem;
+  margin: 0.75rem 0 0.5rem;
+  color: var(--gray-900);
+}
+
+.donor-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.875rem;
+  color: var(--gray-600);
+}

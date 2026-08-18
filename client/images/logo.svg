@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" width="240" height="60">
+  <defs>
+    <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e8354f" />
+      <stop offset="100%" stop-color="#8b0000" />
+    </linearGradient>
+  </defs>
+  <path d="M25 8 C22 18 10 32 10 40 C10 49 17 56 25 56 C33 56 40 49 40 40 C40 32 28 18 25 8 Z" fill="url(#logoGrad)"/>
+  <text x="52" y="42" font-family="'Playfair Display', Georgia, serif" font-size="28" font-weight="bold" fill="#c41e3a">Blood<tspan fill="#111827">Connect</tspan></text>
+</svg>
